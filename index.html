@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divya K R — Unity / XR Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./Divya K R — Unity _ XR Developer_files/css2" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0D11;
+    --bg-raised: #0F1319;
+    --line: #1D242C;
+    --line-soft: #161C22;
+    --ink: #EAEEF2;
+    --ink-dim: #8A94A0;
+    --ink-faint: #545E6A;
+    --teal: #4CE0C4;
+    --teal-dim: #2A8F7C;
+    --coral: #FF6B4E;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  .wrap{ max-width:980px; margin:0 auto; padding:0 32px; }
+
+  /* ---- viewport frame signature element ---- */
+  .viewport{
+    position:relative;
+    border:1px solid var(--line);
+    background:var(--bg-raised);
+  }
+  .viewport::before, .viewport::after,
+  .vp-corner-tl, .vp-corner-tr, .vp-corner-bl, .vp-corner-br{
+    content:'';
+    position:absolute;
+    width:18px; height:18px;
+    border-color:var(--teal);
+    border-style:solid;
+    border-width:0;
+  }
+  .vp-corner-tl{ top:-1px; left:-1px; border-top-width:2px; border-left-width:2px; }
+  .vp-corner-tr{ top:-1px; right:-1px; border-top-width:2px; border-right-width:2px; }
+  .vp-corner-bl{ bottom:-1px; left:-1px; border-bottom-width:2px; border-left-width:2px; }
+  .vp-corner-br{ bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px; }
+
+  /* ---- nav ---- */
+  nav{
+    position:sticky; top:0; z-index:10;
+    background:rgba(10,13,17,0.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{ display:flex; justify-content:space-between; align-items:center; height:64px; }
+  .brand{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:0.02em; }
+  .brand span{ color:var(--teal); }
+  .navlinks{ display:flex; gap:28px; }
+  .navlinks a{ color:var(--ink-dim); text-decoration:none; font-size:13px; letter-spacing:0.03em; text-transform:uppercase; transition:color .15s; }
+  .navlinks a:hover{ color:var(--teal); }
+
+  /* ---- hero ---- */
+  header.hero{ padding:110px 0 90px; }
+  .hero-inner{ position:relative; padding:56px 48px 64px; }
+  .hud-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:44px; }
+  .hud-tag{ font-size:11px; letter-spacing:0.12em; color:var(--ink-faint); text-transform:uppercase; }
+  .hud-live{ display:flex; align-items:center; gap:8px; font-size:11px; letter-spacing:0.08em; color:var(--teal); text-transform:uppercase; }
+  .hud-dot{ width:6px; height:6px; border-radius:50%; background:var(--teal); }
+
+  .eyebrow{ color:var(--teal); font-size:13px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:18px; }
+  h1{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:56px; line-height:1.05; letter-spacing:-0.01em; max-width:720px; }
+  .role{ font-family:'Space Grotesk',sans-serif; font-weight:500; font-size:20px; color:var(--ink-dim); margin-top:20px; max-width:600px; }
+  .hero-desc{ margin-top:22px; max-width:560px; color:var(--ink-dim); font-size:15px; }
+
+  .hero-links{ display:flex; gap:14px; margin-top:36px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 20px; font-size:13px; font-weight:500;
+    text-decoration:none; border:1px solid var(--line); color:var(--ink);
+    transition:border-color .15s, color .15s;
+  }
+  .btn:hover{ border-color:var(--teal); color:var(--teal); }
+  .btn.primary{ background:var(--teal); color:#06120F; border-color:var(--teal); font-weight:600; }
+  .btn.primary:hover{ background:#63EBD1; color:#06120F; }
+
+  .coord-row{ display:flex; gap:32px; margin-top:44px; padding-top:22px; border-top:1px solid var(--line-soft); }
+  .coord{ font-size:11px; color:var(--ink-faint); }
+  .coord b{ color:var(--ink-dim); font-weight:500; }
+
+  /* ---- section shell ---- */
+  section{ padding:70px 0; border-top:1px solid var(--line); }
+  .sec-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:36px; }
+  .sec-num{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--teal); }
+  .sec-title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:26px; }
+  .sec-sub{ color:var(--ink-dim); font-size:14px; margin-top:-24px; margin-bottom:32px; max-width:560px; }
+
+  /* ---- about ---- */
+  .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:48px; }
+  .about-grid p{ color:var(--ink-dim); font-size:15px; margin-bottom:14px; }
+  /* ===== FLOATING WINDOW (applied to every panel/card) ===== */
+  .floating-window{
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.35),
+      0 14px 30px -14px rgba(0,0,0,0.6);
+  }
+  .floating-window::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:22px;
+    border-bottom:1px solid var(--line);
+    background:var(--bg-raised);
+    z-index:1;
+  }
+  .floating-window::after{
+    content:'\25CF \0000a0 \25CF \0000a0 \25CF';
+    position:absolute; top:6px; left:12px;
+    font-size:6px; letter-spacing:3px; color:var(--ink-faint);
+    z-index:2;
+  }
+  .floating-window:hover{
+    animation-play-state:paused;
+    transform:perspective(800px) rotateX(5deg) rotateY(-7deg) translateY(-6px) translateZ(10px);
+    border-color:var(--teal-dim);
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.4),
+      0 30px 50px -18px rgba(0,0,0,0.75),
+      0 0 26px -4px rgba(76,224,196,0.20);
+  }
+  .fw-body{ padding-top:22px; }
+
+  .stat-box{
+    border:1px solid var(--line);
+    background:linear-gradient(160deg, var(--bg-raised), var(--bg));
+    padding:22px 20px 20px;
+    margin-bottom:22px;
+  }
+  .stat-box .n{ margin-top:14px; }
+  .stat-box-wrap{ perspective:1000px; }
+  .stat-box .n{ font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:600; color:var(--teal); }
+  .stat-box .l{ font-size:12px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px; }
+
+  /* ---- project cards ---- */
+  .project{ padding:0; margin-bottom:32px; }
+  .project-media{
+    position:relative; height:220px; overflow:hidden;
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .scene-ninja{ background:
+      radial-gradient(ellipse at 30% 20%, rgba(76,224,196,0.10), transparent 55%),
+      repeating-linear-gradient(115deg, #12181F 0 2px, #0D1116 2px 46px),
+      linear-gradient(180deg, #0D1116, #0A0D11);
+  }
+  .scene-cube{ background:
+      radial-gradient(ellipse at 70% 30%, rgba(255,107,78,0.10), transparent 55%),
+      repeating-linear-gradient(0deg, #12181F 0 1px, #0D1116 1px 40px),
+      repeating-linear-gradient(90deg, #12181F 0 1px, transparent 1px 40px),
+      linear-gradient(180deg, #0D1116, #0A0D11);
+  }
+  .media-label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-faint);
+    position:absolute; bottom:12px; left:16px; letter-spacing:0.04em;
+  }
+  .media-tag{
+    position:absolute; top:12px; right:16px;
+    font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em;
+    color:var(--teal); border:1px solid var(--teal-dim); padding:3px 8px;
+  }
+  .cube-shape{ width:64px; height:64px; background:linear-gradient(135deg,#FF6B4E,#c94b32); transform:rotate(45deg); box-shadow:0 0 0 1px rgba(255,107,78,0.3); }
+  .ninja-shape{ width:0; height:0; border-left:34px solid transparent; border-right:34px solid transparent; border-bottom:64px solid #4CE0C4; opacity:0.85; }
+
+  .project-body{ padding:26px 28px 30px; }
+  .project-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:6px; }
+  .project-title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:20px; }
+  .project-tools{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-faint); margin-top:4px; }
+  .project-links{ display:flex; gap:10px; }
+  .project-links a{ font-size:12px; color:var(--teal); text-decoration:none; border-bottom:1px solid var(--teal-dim); padding-bottom:1px; }
+
+  .project-list{ list-style:none; margin-top:16px; }
+  .project-list li{ font-size:14px; color:var(--ink-dim); padding-left:18px; position:relative; margin-bottom:8px; }
+  .project-list li::before{ content:'—'; position:absolute; left:0; color:var(--ink-faint); }
+
+  .tagrow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+  .tag{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-dim); border:1px solid var(--line); padding:4px 10px; }
+
+  /* learning note */
+  .learn-note{ display:flex; gap:16px; align-items:flex-start; border:1px solid var(--line); padding:20px 24px; margin-top:8px; }
+  .learn-note .dot{ width:8px; height:8px; margin-top:6px; background:var(--ink-faint); flex-shrink:0; }
+  .learn-note b{ color:var(--ink); }
+  .learn-note p{ color:var(--ink-dim); font-size:14px; margin-top:4px; }
+
+  /* ---- skills ---- */
+  .skill-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .skill-cell{ background:var(--bg); padding:22px 26px; }
+  .skill-cell h4{ font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; color:var(--teal); margin-bottom:12px; letter-spacing:0.02em; text-transform:uppercase; }
+  .skill-cell .tagrow{ margin-top:0; }
+
+  /* ---- certifications ---- */
+  .cert{ display:flex; justify-content:space-between; align-items:center; padding:18px 0; border-bottom:1px solid var(--line-soft); }
+  .cert:last-child{ border-bottom:none; }
+  .cert-name{ font-size:15px; font-weight:500; }
+  .cert-issuer{ font-size:12px; color:var(--ink-faint); margin-top:3px; }
+  .cert-link{ font-size:12px; color:var(--teal); text-decoration:none; font-family:'JetBrains Mono',monospace; white-space:nowrap; }
+  .cert-featured{ border:1px solid var(--teal-dim); padding:16px 20px; margin-bottom:4px; }
+  .cert-grid{ margin-top:8px; }
+  .cert-box{
+    border:1px solid var(--line);
+    background:linear-gradient(160deg, var(--bg-raised), var(--bg));
+    padding:34px 24px 24px;
+    margin-bottom:28px;
+    display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .cert-drop{ display:flex; align-items:center; gap:10px; cursor:pointer; }
+  .cert-drop-icon{ font-size:18px; color:var(--ink-faint); line-height:1; }
+  .cert-drop-text{ font-size:12px; color:var(--ink-faint); font-family:'JetBrains Mono',monospace; line-height:1.4; text-align:right; }
+  .cert-drop:hover .cert-drop-icon, .cert-drop:hover .cert-drop-text{ color:var(--teal); }
+  .cert-drop-hover{ border-color:var(--teal-dim); }
+  .cert-drop-input{ display:none; }
+  .cert-drop-link{ font-size:13px; color:var(--teal); text-decoration:none; font-family:'JetBrains Mono',monospace; white-space:nowrap; }
+  .cert-drop-filename, .cert-drop-change{ display:none; }
+
+  /* ---- footer ---- */
+  footer{ padding:70px 0 60px; }
+  .footer-inner{ text-align:center; }
+  .footer-inner h2{ font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:600; max-width:520px; margin:0 auto 20px; }
+  .footer-links{ display:flex; justify-content:center; gap:14px; margin-top:30px; flex-wrap:wrap; }
+  .footer-meta{ margin-top:56px; padding-top:24px; border-top:1px solid var(--line-soft); font-size:12px; color:var(--ink-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+
+  /* ===== CUSTOM ANIMATIONS =====
+     Add any of these class names to an element to use them.
+     Example: <div class="project fade-up"> */
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(24px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .fade-up{ animation:fadeUp 0.7s ease-out both; }
+
+  @keyframes float{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-10px) rotate(0.5deg); }
+  }
+  .float{ animation:float 2.2s ease-in-out infinite; }
+
+  @keyframes floatSlow{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-5px); }
+  }
+  .float-slow{ animation:floatSlow 3.4s ease-in-out infinite; }
+
+  @keyframes pulseGlow{
+    0%,100%{ box-shadow:0 0 0 rgba(76,224,196,0); }
+    50%{ box-shadow:0 0 24px rgba(76,224,196,0.25); }
+  }
+  .pulse-glow{ animation:pulseGlow 2.5s ease-in-out infinite; }
+
+  /* project cards lift via .floating-window on hover (see above) */
+
+  /* buttons already transition; this adds a subtle press effect */
+  .btn{ transition:border-color .15s, color .15s, transform .1s; }
+  .btn:active{ transform:scale(0.97); }
+
+  /* stagger the hero elements in on page load */
+  .hero-inner .eyebrow{ animation:fadeUp .6s ease-out both; }
+  .hero-inner h1{ animation:fadeUp .6s ease-out .1s both; }
+  .hero-inner .role{ animation:fadeUp .6s ease-out .2s both; }
+  .hero-inner .hero-desc{ animation:fadeUp .6s ease-out .3s both; }
+  .hero-inner .hero-links{ animation:fadeUp .6s ease-out .4s both; }
+  .hero-inner .coord-row{ animation:fadeUp .6s ease-out .5s both; }
+
+  .project-media{ margin-top:22px; cursor:pointer; }
+  .play-hint{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.35); color:var(--ink); font-family:'JetBrains Mono',monospace;
+    font-size:12px; letter-spacing:0.05em; opacity:0; pointer-events:none; transition:opacity .2s;
+  }
+  .project-media:hover .play-hint{ opacity:1; }
+  .skill-cell{ padding-top:30px; }
+  .cert-featured{ padding-top:30px; }
+  .hero-inner{ padding-top:56px; }
+
+  @media (max-width:760px){
+    h1{ font-size:38px; }
+    .about-grid{ grid-template-columns:1fr; }
+    .skill-grid{ grid-template-columns:1fr; }
+    .hero-inner{ padding:36px 24px 44px; }
+    .coord-row{ flex-wrap:wrap; gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">DIVYA<span>.</span>KR</div>
+    <div class="navlinks">
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#certs">Certifications</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="viewport floating-window float-slow">
+      <span class="vp-corner-tl"></span><span class="vp-corner-tr"></span>
+      <span class="vp-corner-bl"></span><span class="vp-corner-br"></span>
+      <div class="hero-inner">
+        <div class="hud-row">
+          <span class="hud-tag mono">scene — portfolio.unity</span>
+          <span class="hud-live"><span class="hud-dot"></span>available for internship</span>
+        </div>
+
+        <div class="eyebrow">Unity / XR Developer</div>
+        <h1>Building real-time 3D worlds people can walk into.</h1>
+        <p class="role">Divya K R — AI &amp; ML student who builds interactive Unity applications from scratch</p>
+        <p class="hero-desc">Third-year student with hands-on experience in Unity, C#, and interactive systems — from player controllers to full UI flows to environment design. Currently learning toward AR/VR/MR development.</p>
+
+        <div class="hero-links">
+          <a class="btn primary" href="#work">View projects</a>
+          <a class="btn" href="mailto:divya.kr2436@gmail.com">Get in touch</a>
+          <a class="btn" href="https://github.com/divyakr2436-dotcom" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+
+        <div class="coord-row mono">
+          <span class="coord"><b>Location</b> Bangalore, IN</span>
+          <span class="coord"><b>Engine</b> Unity 6 · URP</span>
+          <span class="coord"><b>Focus</b> C# · Interactive Systems</span>
+          <span class="coord"><b>Status</b> Open to internships</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num mono">01</span><span class="sec-title">About</span></div>
+    <div class="about-grid">
+      <div>
+        <p>I'm a third-year AI &amp; ML student (CGPA 9.2/10) who spends most of my free time inside the Unity Editor — building player controllers, scoring systems, UI flows, and small game worlds from the ground up.</p>
+        <p>Alongside game development, I work with embedded hardware (Arduino) and AI systems, which shapes how I think about interaction — I like building things people can directly control and see respond in real time, whether that's a cube dodging bombs or a sensor sorting waste.</p>
+        <p>I'm looking for a Unity / XR internship where I can move from single-player game logic into AR, VR, and MR development.</p>
+      </div>
+      <div>
+      <div class="stat-box-wrap">
+        <div class="stat-box floating-window float" style="animation-delay:0s;"><div class="n">9.2</div><div class="l">CGPA / 10</div></div>
+        <div class="stat-box floating-window float" style="animation-delay:.6s;"><div class="n">3</div><div class="l">Original Unity games shipped</div></div>
+        <div class="stat-box floating-window float" style="animation-delay:1.2s;"><div class="n">2</div><div class="l">Unity Technologies credentials</div></div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num mono">02</span><span class="sec-title">Selected work</span></div>
+    <p class="sec-sub">Three original Unity builds — designed, scripted, and assembled from scratch.</p>
+
+    <div class="project viewport floating-window float">
+      <span class="vp-corner-tl"></span><span class="vp-corner-tr"></span>
+      <span class="vp-corner-bl"></span><span class="vp-corner-br"></span>
+      <div class="project-media scene-ninja">
+        <video autoplay="" loop="" muted="" playsinline="" src="ninja-village.mp4" style="width:100%;height:100%;object-fit:cover;"></video>
+        <span class="play-hint">▶ click if paused</span>
+        <span class="media-tag mono">3D · Action</span>
+      </div>
+      <div class="project-body">
+        <div class="project-head">
+          <div>
+            <div class="project-title">Ninja Village</div>
+            <div class="project-tools mono">Unity · C# · Mixamo · Pixabay</div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/divyakr2436-dotcom/Ninja-village-game" target="_blank" rel="noopener">Source ↗</a>
+            <a href="ninja-village.mp4" target="_blank" rel="noopener">Gameplay ↗</a>
+          </div>
+        </div>
+        <ul class="project-list">
+          <li>Village-themed 3D game with dual movement states (walk / run), coin-based scoring, and a three-lives system with bomb-hit fail condition.</li>
+          <li>Full UI/Canvas flow — main menu, help menu, credits menu, and game-over menu — with custom player controller and camera-follow scripts.</li>
+          <li>Built environment art (terrain, village structures, props) and integrated Mixamo animation with Pixabay audio.</li>
+        </ul>
+        <div class="tagrow">
+          <span class="tag">Player Controller</span>
+          <span class="tag">Camera System</span>
+          <span class="tag">UI / Canvas</span>
+          <span class="tag">Environment Design</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project viewport floating-window float" style="animation-delay:.4s;">
+      <span class="vp-corner-tl"></span><span class="vp-corner-tr"></span>
+      <span class="vp-corner-bl"></span><span class="vp-corner-br"></span>
+      <div class="project-media scene-cube">
+        <video autoplay="" loop="" muted="" playsinline="" src="cube-runner.mp4" style="width:100%;height:100%;object-fit:cover;"></video>
+        <span class="play-hint">▶ click if paused</span>
+        <span class="media-tag mono">3D · Endless runner</span>
+      </div>
+      <div class="project-body">
+        <div class="project-head">
+          <div>
+            <div class="project-title">Cube Runner</div>
+            <div class="project-tools mono">Unity 6 · C# · URP</div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/divyakr2436-dotcom/Cube-runner-game" target="_blank" rel="noopener">Source ↗</a>
+            <a href="cube-runner.mp4" target="_blank" rel="noopener">Gameplay ↗</a>
+          </div>
+        </div>
+        <ul class="project-list">
+          <li>Highway-themed endless runner — the player cube collects diamonds (+100 pts each) while dodging bombs, with high-score tracking.</li>
+          <li>Game Manager and spawner system handling diamond/obstacle generation and scoring across repeating road segments.</li>
+          <li>Game-over screen displaying highest score, plus a start menu and full UI flow.</li>
+        </ul>
+        <div class="tagrow">
+          <span class="tag">Game Manager</span>
+          <span class="tag">Spawner System</span>
+          <span class="tag">Scoring Logic</span>
+          <span class="tag">UI / Canvas</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project viewport floating-window float" style="animation-delay:.8s;">
+      <span class="vp-corner-tl"></span><span class="vp-corner-tr"></span>
+      <span class="vp-corner-bl"></span><span class="vp-corner-br"></span>
+      <div class="project-media scene-cube">
+        <video autoplay="" loop="" muted="" playsinline="" src="rollerball.mp4" style="width:100%;height:100%;object-fit:cover;"></video>
+        <span class="play-hint">▶ click if paused</span>
+        <span class="media-tag mono">3D · Ball Roller</span>
+      </div>
+      <div class="project-body">
+        <div class="project-head">
+          <div>
+            <div class="project-title">RollerBall</div>
+            <div class="project-tools mono">Unity 6 · C#</div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/divyakr2436-dotcom/RollerBall" target="_blank" rel="noopener">Source ↗</a>
+            <a href="rollerball.mp4" target="_blank" rel="noopener">Gameplay ↗</a>
+          </div>
+        </div>
+        <ul class="project-list">
+          <li>Built on Unity's Roll-a-Ball tutorial foundation, extended with original enemy AI that actively chases the player through an obstacle course.</li>
+          <li>Implemented pushable, physics-based dynamic obstacles (Rigidbody interactions) alongside a star collectible system.</li>
+          <li>Designed win-condition logic and end-game UI triggered once objectives are cleared.</li>
+        </ul>
+        <div class="tagrow">
+          <span class="tag">Enemy AI</span>
+          <span class="tag">Physics / Rigidbody</span>
+          <span class="tag">Collectibles</span>
+          <span class="tag">Win Condition Logic</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="learn-note">
+      <span class="dot"></span>
+      <div>
+        <b>Also completed:</b> Unity's official 3D beginner development pathway — covering character controllers, collectibles, moving platforms, and UI systems.
+        <p>Followed as a structured learning project rather than an original build — verified by the Unity Essentials and Unity Game Development credentials below.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num mono">03</span><span class="sec-title">Skills</span></div>
+    <div class="skill-grid">
+      <div class="skill-cell floating-window float" style="animation-delay:0s;">
+        <h4>Game Development</h4>
+        <div class="tagrow">
+          <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Player Controllers</span><span class="tag">UI / Canvas</span><span class="tag">Camera Systems</span><span class="tag">Game State Mgmt</span>
+        </div>
+      </div>
+      <div class="skill-cell floating-window float" style="animation-delay:.3s;">
+        <h4>Languages</h4>
+        <div class="tagrow">
+          <span class="tag">C</span><span class="tag">C#</span><span class="tag">Python</span><span class="tag">R</span>
+        </div>
+      </div>
+      <div class="skill-cell floating-window float" style="animation-delay:.6s;">
+        <h4>Tools &amp; Platforms</h4>
+        <div class="tagrow">
+          <span class="tag">Unity Hub</span><span class="tag">Arduino Uno</span><span class="tag">Git / GitHub</span><span class="tag">VS Code</span><span class="tag">IBM watsonx.ai</span>
+        </div>
+      </div>
+      <div class="skill-cell floating-window float" style="animation-delay:.9s;">
+        <h4>Web &amp; Data</h4>
+        <div class="tagrow">
+          <span class="tag">Flask</span><span class="tag">HTML/CSS/JS</span><span class="tag">SQLite/MySQL</span><span class="tag">RStudio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certs">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num mono">04</span><span class="sec-title">Certifications</span></div>
+    <p class="sec-sub">Verified credentials in Unity, AR/VR and AI fundamentals.</p>
+
+    <div class="cert-grid">
+
+      <div class="cert-box floating-window float" style="animation-delay:0s;">
+        <div class="cert-info">
+          <div class="cert-name">Foundations of Immersive Design for AR/VR</div>
+          <div class="cert-issuer mono">NPTEL · IIT Kanpur · Jul–Oct 2026 · Elite · 90%</div>
+        </div>
+        <a class="cert-drop-link" href="certs/NPTEL.pdf" target="_blank" rel="noopener">View Certificate ↗</a>
+      </div>
+
+      <div class="cert-box floating-window float" style="animation-delay:.2s;">
+        <div class="cert-info">
+          <div class="cert-name">Unity Game Development</div>
+          <div class="cert-issuer mono">Unity Technologies · Issued Sep 2026</div>
+        </div>
+        <a class="cert-drop-link" href="https://www.credly.com/go/lZIfYVNF" target="_blank" rel="noopener">Verify on Credly ↗</a>
+      </div>
+
+      <div class="cert-box floating-window float" style="animation-delay:.4s;">
+        <div class="cert-info">
+          <div class="cert-name">Unity Essentials</div>
+          <div class="cert-issuer mono">Unity Technologies · Issued Aug 2026</div>
+        </div>
+        <a class="cert-drop-link" href="https://www.credly.com/users/divya-kr" target="_blank" rel="noopener">View on Credly ↗</a>
+      </div>
+
+      <div class="cert">
+        <div class="cert-info">
+          <div class="cert-name">AI Literacy &amp; Fundamentals</div>
+          <div class="cert-issuer mono">IBM</div>
+        </div>
+      </div>
+
+      <div class="cert">
+        <div class="cert-info">
+          <div class="cert-name">Data Structures and Algorithms</div>
+          <div class="cert-issuer mono">Infosys Springboard</div>
+        </div>
+      </div>
+
+      <div class="cert">
+        <div class="cert-info">
+          <div class="cert-name">Git and GitHub</div>
+          <div class="cert-issuer mono">Infosys Springboard</div>
+        </div>
+      </div>
+
+      <div class="cert">
+        <div class="cert-info">
+          <div class="cert-name">Python for Problem Solving</div>
+          <div class="cert-issuer mono">Udemy</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var zones = document.querySelectorAll('.cert-drop');
+  zones.forEach(function(zone){
+    var input = zone.querySelector('.cert-drop-input');
+
+    function handleFile(file){
+      if(!file) return;
+      var url = URL.createObjectURL(file);
+      zone.innerHTML =
+        '<a class="cert-drop-link" href="' + url + '" target="_blank" rel="noopener">View Certificate ↗</a>' +
+        '<span class="cert-drop-filename">' + file.name + '</span>' +
+        '<span class="cert-drop-change">click to replace</span>';
+      zone.classList.add('cert-drop-filled');
+      zone.onclick = function(e){
+        // clicking the filename/change area re-opens the file picker;
+        // clicking the "View Certificate" link opens the PDF as normal.
+        if(e.target.classList.contains('cert-drop-link')) return;
+        e.preventDefault();
+        reAttachInput();
+      };
+    }
+
+    function reAttachInput(){
+      var newInput = document.createElement('input');
+      newInput.type = 'file';
+      newInput.accept = 'application/pdf';
+      newInput.className = 'cert-drop-input';
+      newInput.style.display = 'none';
+      zone.appendChild(newInput);
+      newInput.addEventListener('change', function(){
+        handleFile(newInput.files[0]);
+      });
+      newInput.click();
+    }
+
+    zone.addEventListener('click', function(){
+      if(zone.classList.contains('cert-drop-filled')) return;
+      input.click();
+    });
+    input.addEventListener('change', function(){
+      handleFile(input.files[0]);
+    });
+    zone.addEventListener('dragover', function(e){
+      e.preventDefault();
+      zone.classList.add('cert-drop-hover');
+    });
+    zone.addEventListener('dragleave', function(){
+      zone.classList.remove('cert-drop-hover');
+    });
+    zone.addEventListener('drop', function(e){
+      e.preventDefault();
+      zone.classList.remove('cert-drop-hover');
+      handleFile(e.dataTransfer.files[0]);
+    });
+  });
+})();
+</script>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="eyebrow" style="justify-content:center;display:flex;">Get in touch</div>
+      <h2>Open to Unity, XR, and interactive-systems internships.</h2>
+      <div class="footer-links">
+        <a class="btn primary" href="mailto:divya.kr2436@gmail.com">divya.kr2436@gmail.com</a>
+        <a class="btn" href="https://linkedin.com/in/divya-kr-0b6463334" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn" href="https://github.com/divyakr2436-dotcom" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="footer-meta">
+        <span>Divya K R — Bangalore, India</span>
+        <span class="mono">Built with Unity, C#, and a lot of Game Over screens</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Some browsers silently block autoplay even when muted, especially
+  // for local file:// pages. This forces every project video to start
+  // playing once it's ready, so it never sits stuck on a black frame.
+  document.querySelectorAll('.project-media video').forEach(function(v){
+    v.muted = true;
+    var tryPlay = function(){ v.play().catch(function(){}); };
+    if (v.readyState >= 2) { tryPlay(); }
+    v.addEventListener('loadeddata', tryPlay);
+    v.addEventListener('canplay', tryPlay);
+    // fallback: if it's still paused after a moment, try again
+    setTimeout(tryPlay, 500);
+    setTimeout(tryPlay, 1500);
+  });
+  // manual fallback: clicking the video area always (re)plays it
+  document.querySelectorAll('.project-media').forEach(function(box){
+    box.addEventListener('click', function(){
+      var v = box.querySelector('video');
+      if (v) { v.muted = true; v.play().catch(function(){}); }
+    });
+  });
+</script>
+
+
+</body></html>
